@@ -13,7 +13,8 @@
         var pt = patient.read();
         var obv = smart.patient.api.fetchAll({
                     type: 'Observation',
-                    query: {
+                    count:7,
+                     query: {
                       code: {
                         $or: ['http://loinc.org|8302-2', 'http://loinc.org|8462-4',
                               'http://loinc.org|8480-6', 'http://loinc.org|2085-9',
@@ -22,13 +23,15 @@
                       }
                     }
                   });
-
+        
         $.when(pt, obv).fail(onError);
 
         $.when(pt, obv).done(function(patient, obv) {
           var byCodes = smart.byCodes(obv, 'code');
           var gender = patient.gender;
-
+          console.log(byCodes('8302-2'))
+          console.log(byCodes('29463-7'))
+          console.log(byCodes('2085-9'))
           var fname = '';
           var lname = '';
 
@@ -62,6 +65,7 @@
 
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
+         
 
           ret.resolve(p);
         });
